@@ -96,11 +96,22 @@ const ProfileDropdown = ({ onNavigateToConfig }) => {
         {/* BOTÓN DEL PERFIL */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-9 h-9 rounded-full bg-[#047857] hover:bg-[#065f46] text-white flex items-center justify-center transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
+          className="w-9 h-9 rounded-full relative flex items-center justify-center overflow-hidden border-2 border-emerald-500/80 hover:border-emerald-600 transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
           aria-label="Menú de perfil"
-          title={user?.name || 'Perfil'}
+          title={user?.nombre || user?.name || 'Perfil'}
         >
-          <i className="fas fa-user text-xs"></i>
+          <img
+            src={getAvatarUrl(user) || '/profile.avif'}
+            alt={user?.nombre || user?.name || 'Foto de perfil'}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div className="w-full h-full bg-[#047857] text-white flex items-center justify-center text-xs hidden">
+            <i className="fas fa-user text-xs"></i>
+          </div>
         </button>
 
         {/* MENÚ DESPLEGABLE */}
@@ -110,27 +121,27 @@ const ProfileDropdown = ({ onNavigateToConfig }) => {
             {/* HEADER CON INFORMACIÓN DEL USUARIO */}
             <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="relative">
+                <div className="relative w-12 h-12 flex-shrink-0">
                   <img
                     src={getAvatarUrl(user) || '/profile.avif'}
                     alt="Foto de perfil"
-                    className="w-12 h-12 rounded-full object-cover border-2 border-primary-200 dark:border-primary-600"
+                    className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500 dark:border-emerald-500"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
                     }}
                   />
                   <div 
-                    className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm hidden"
+                    className="w-12 h-12 bg-[#047857] rounded-full flex items-center justify-center text-white text-sm hidden"
                   >
                     <i className="fas fa-user"></i>
                   </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {user?.name || 'Usuario'}
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                    {user?.nombre || user?.name || 'Usuario'}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     {user?.email || 'usuario@bancoexpres.com'}
                   </p>
                 </div>
