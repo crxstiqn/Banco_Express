@@ -157,7 +157,7 @@ const OperationsChart = () => {
                 onClick={() => setYear(y)}
                 className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
                   year === y
-                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                    ? 'bg-[#047857] text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
                 }`}
               >
@@ -194,12 +194,12 @@ const OperationsChart = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#0284c7] shrink-0"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#047857] shrink-0"></span>
             <div>
               <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 BALANCE NETO OPERADO
               </span>
-              <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 tabular-nums">
+              <span className="text-sm font-extrabold text-[#047857] dark:text-emerald-400 tabular-nums">
                 +{netBalance > 0 ? `$${netBalance.toLocaleString('es-CO')}` : '$2.400.000'} <span className="text-[10px] font-semibold text-slate-400">COP</span>
               </span>
             </div>
@@ -234,10 +234,10 @@ const OperationsChart = () => {
 
       </div>
 
-      {/* Blue Alert Banner below Chart matching screenshot */}
-      <div className="p-3.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-900/50 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
-          <div className="w-7 h-7 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 text-xs">
+      {/* Emerald Alert Banner below Chart */}
+      <div className="p-3.5 bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800/50 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5 text-slate-800 dark:text-slate-200">
+          <div className="w-7 h-7 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-[#047857] dark:text-emerald-400 flex items-center justify-center shrink-0 text-xs">
             <i className="fas fa-lock"></i>
           </div>
           <span>
@@ -246,7 +246,7 @@ const OperationsChart = () => {
         </div>
         <button 
           onClick={() => alert('Bitácora de cierre diario: Todas las transacciones y libros de caja se encuentran cuadrados sin inconsistencias.')}
-          className="text-xs font-bold text-blue-700 dark:text-blue-400 hover:text-blue-800 transition-colors shrink-0 text-left sm:text-right"
+          className="text-xs font-bold text-[#047857] dark:text-emerald-400 hover:text-[#065f46] transition-colors shrink-0 text-left sm:text-right cursor-pointer"
         >
           Ver Bitácora de Cierre
         </button>

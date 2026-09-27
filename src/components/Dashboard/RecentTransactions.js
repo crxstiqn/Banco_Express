@@ -53,7 +53,7 @@ const RecentTransactions = ({ stats, onNavigate }) => {
                 onClick={() => setFilterType(t)}
                 className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                   filterType === t
-                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-semibold'
+                    ? 'bg-[#047857] text-white shadow-xs font-bold'
                     : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
                 }`}
               >
@@ -64,7 +64,7 @@ const RecentTransactions = ({ stats, onNavigate }) => {
 
           <button 
             onClick={() => onNavigate && onNavigate('transacciones')}
-            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1 transition-colors shrink-0"
+            className="text-xs font-bold text-[#047857] hover:text-[#065f46] dark:text-emerald-400 flex items-center gap-1 transition-colors shrink-0 cursor-pointer"
           >
             <span>Ver todo</span>
             <i className="fas fa-arrow-right text-[10px]"></i>

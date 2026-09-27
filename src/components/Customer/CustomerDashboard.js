@@ -217,7 +217,7 @@ const CustomerDashboard = ({ onNavigate }) => {
           </div>
           <button
             onClick={() => onNavigate && onNavigate('mis-cuentas')}
-            className="text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1 transition-colors"
+            className="text-xs text-[#047857] hover:text-[#065f46] dark:text-emerald-400 font-bold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <span>Ver detalles</span>
             <i className="fas fa-arrow-right text-[10px]"></i>
@@ -228,11 +228,11 @@ const CustomerDashboard = ({ onNavigate }) => {
           {accounts.map(acc => (
             <div
               key={acc.id}
-              className="neobank-card p-5 group hover:border-emerald-500/40 transition-all duration-300"
+              className="neobank-card p-5 group hover:border-emerald-500/60 transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40 flex items-center justify-center text-sm font-bold shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 text-[#047857] dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40 flex items-center justify-center text-sm font-bold shadow-2xs">
                     <i className="fas fa-wallet"></i>
                   </div>
                   <div>
@@ -271,13 +271,13 @@ const CustomerDashboard = ({ onNavigate }) => {
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => onNavigate && onNavigate('transferencias')}
-                    className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
+                    className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-[#047857] transition-colors cursor-pointer"
                   >
                     Transferir
                   </button>
                   <button
                     onClick={() => onNavigate && onNavigate('recargar-cuenta')}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/40 text-xs font-semibold hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold transition-colors shadow-2xs cursor-pointer"
                   >
                     Recargar
                   </button>
@@ -306,7 +306,7 @@ const CustomerDashboard = ({ onNavigate }) => {
               onClick={() => setFilterMode('all')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                 filterMode === 'all'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs'
+                  ? 'bg-[#047857] text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
               }`}
             >
@@ -316,7 +316,7 @@ const CustomerDashboard = ({ onNavigate }) => {
               onClick={() => setFilterMode('incomes')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                 filterMode === 'incomes'
-                  ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-2xs'
+                  ? 'bg-[#047857] text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
               }`}
             >
@@ -326,7 +326,7 @@ const CustomerDashboard = ({ onNavigate }) => {
               onClick={() => setFilterMode('expenses')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                 filterMode === 'expenses'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs'
+                  ? 'bg-[#047857] text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400'
               }`}
             >

@@ -38,7 +38,7 @@ const QuickActions = ({ onSuccess }) => {
       shortcut: 'F1 • Efectivo',
       icon: 'fas fa-inbox',
       iconBg: 'bg-[#047857] text-white',
-      borderHover: 'hover:border-emerald-500/50'
+      borderHover: 'hover:border-emerald-500/60'
     },
     {
       id: 'retiro',
@@ -46,8 +46,8 @@ const QuickActions = ({ onSuccess }) => {
       subtitle: 'Dispensar con biome...',
       shortcut: 'F2 • Caja Directa',
       icon: 'fas fa-money-bill-transfer',
-      iconBg: 'bg-[#334155] text-white',
-      borderHover: 'hover:border-slate-500/50'
+      iconBg: 'bg-[#065f46] text-white',
+      borderHover: 'hover:border-emerald-500/60'
     },
     {
       id: 'transferencia',
@@ -55,8 +55,8 @@ const QuickActions = ({ onSuccess }) => {
       subtitle: 'Cuentas Propias / ACH',
       shortcut: 'F3 • Transfiya',
       icon: 'fas fa-repeat',
-      iconBg: 'bg-[#0284c7] text-white',
-      borderHover: 'hover:border-blue-500/50'
+      iconBg: 'bg-[#059669] text-white',
+      borderHover: 'hover:border-emerald-500/60'
     },
     {
       id: 'pago',
@@ -64,8 +64,8 @@ const QuickActions = ({ onSuccess }) => {
       subtitle: 'Facturación y conven...',
       shortcut: 'F4 • Recaudo',
       icon: 'fas fa-file-invoice',
-      iconBg: 'bg-[#1e293b] text-white',
-      borderHover: 'hover:border-slate-500/50'
+      iconBg: 'bg-[#047857] text-white',
+      borderHover: 'hover:border-emerald-500/60'
     }
   ];
 

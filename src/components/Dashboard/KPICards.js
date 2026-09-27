@@ -17,7 +17,7 @@ const KPICards = ({ stats }) => {
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               SALDO EN CUSTODIA
             </span>
-            <div className="w-7 h-7 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-center text-slate-500 text-xs hover:bg-slate-100 transition-colors cursor-pointer">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-[#047857] dark:text-emerald-400 flex items-center justify-center text-xs">
               <i className="fas fa-chevron-right text-[10px]"></i>
             </div>
           </div>
@@ -41,8 +41,8 @@ const KPICards = ({ stats }) => {
           <svg className="w-full h-8 overflow-visible" viewBox="0 0 100 25" preserveAspectRatio="none">
             <defs>
               <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="#047857" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#047857" stopOpacity="0.0" />
               </linearGradient>
             </defs>
             <path
@@ -67,7 +67,7 @@ const KPICards = ({ stats }) => {
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               OPERACIONES TOTALES
             </span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-[#047857] dark:text-emerald-400 flex items-center justify-center text-xs">
               <i className="fas fa-arrows-rotate text-xs"></i>
             </div>
           </div>
@@ -86,15 +86,15 @@ const KPICards = ({ stats }) => {
           </div>
         </div>
 
-        {/* Split progress bar */}
+        {/* Split emerald progress bar */}
         <div className="mt-4 pt-2">
           <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium mb-1">
-            <span>9 Depósitos</span>
+            <span className="text-emerald-700 dark:text-emerald-400 font-semibold">9 Depósitos</span>
             <span>5 Débitos</span>
           </div>
           <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex">
             <div className="w-[64%] h-full bg-[#047857] rounded-l-full"></div>
-            <div className="w-[36%] h-full bg-[#0284c7] rounded-r-full"></div>
+            <div className="w-[36%] h-full bg-emerald-400 rounded-r-full"></div>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ const KPICards = ({ stats }) => {
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               CLIENTES ACTIVOS
             </span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-[#047857] dark:text-emerald-400 flex items-center justify-center text-xs">
               <i className="fas fa-user-group text-xs"></i>
             </div>
           </div>
@@ -125,13 +125,13 @@ const KPICards = ({ stats }) => {
           </div>
         </div>
 
-        {/* Blue Sparkline SVG */}
+        {/* Emerald Sparkline SVG */}
         <div className="mt-4 pt-2">
           <svg className="w-full h-8 overflow-visible" viewBox="0 0 100 25" preserveAspectRatio="none">
             <path
               d="M 0,22 Q 25,20 40,18 T 70,16 T 100,10"
               fill="none"
-              stroke="#0284c7"
+              stroke="#047857"
               strokeWidth="2.2"
               strokeLinecap="round"
             />
@@ -146,7 +146,7 @@ const KPICards = ({ stats }) => {
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               SALUD DE CUENTAS
             </span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-[#047857] dark:text-emerald-400 flex items-center justify-center text-xs">
               <i className="fas fa-shield-check text-xs"></i>
             </div>
           </div>
@@ -158,10 +158,10 @@ const KPICards = ({ stats }) => {
             <span className="text-sm font-medium text-slate-500 dark:text-slate-400">carteras activas</span>
           </div>
 
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-0.5"></span>
             <span>Sin bloqueos</span>
-            <span className="text-slate-400">•</span>
+            <span className="text-emerald-600 dark:text-emerald-400">•</span>
             <span>100% óptimo</span>
           </div>
         </div>
