@@ -9,7 +9,6 @@ const ClientsSection = () => {
   const { user } = useAuth();
   
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
@@ -31,16 +30,15 @@ const ClientsSection = () => {
       const res = await apiFetch('http://localhost:5001/api/clients');
       const data = await res.json();
       setClients(data);
-      setLoading(false);
     } catch (err) {
       console.error(err);
       actions.showToast('Error cargando clientes', 'error');
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchClients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Filter clients
@@ -169,6 +167,13 @@ const ClientsSection = () => {
             Administra la información de los clientes del banco
           </p>
         </div>
+        <button
+          onClick={handleCreateClient}
+          className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          <i className="fas fa-plus mr-2"></i>
+          Nuevo Cliente
+        </button>
       </div>
 
       {/* Filters */}

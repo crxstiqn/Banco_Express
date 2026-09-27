@@ -1,102 +1,153 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const RecentTransactions = ({ stats, onNavigate }) => {
-  // Get recent transactions from real backend
+  const [filterType, setFilterType] = useState('Todas');
   const recentTransactions = stats?.recentTransactions || [];
 
-  const getTransactionIcon = (tipo) => {
+  const filteredTransactions = recentTransactions.filter(tx => {
+    if (filterType === 'Todas') return true;
+    return tx.type === filterType;
+  });
+
+  const getTransactionBadge = (tipo) => {
     switch (tipo) {
       case 'Depósito':
-        return 'fas fa-arrow-down text-green-600';
+        return 'bg-emerald-50/90 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200/60 dark:border-emerald-800/40';
       case 'Retiro':
-        return 'fas fa-arrow-up text-red-600';
+        return 'bg-rose-50/90 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200/60 dark:border-rose-800/40';
       case 'Transferencia':
-        return 'fas fa-exchange-alt text-blue-600';
+        return 'bg-teal-50/90 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 border-teal-200/60 dark:border-teal-800/40';
       case 'Pago':
-        return 'fas fa-credit-card text-purple-600';
+        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700';
       default:
-        return 'fas fa-circle text-gray-600';
+        return 'bg-slate-100 text-slate-700 border-slate-200';
     }
   };
 
+  const types = ['Todas', 'Depósito', 'Retiro', 'Transferencia', 'Pago'];
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Transacciones Recientes
-        </h3>
-        <button 
-          onClick={() => onNavigate && onNavigate('transacciones')}
-          className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-medium transition-colors"
-        >
-          Ver todas
-        </button>
-      </div>
-
-      <div className="space-y-4">
-        {recentTransactions.length > 0 ? (
-          recentTransactions.map((transaction) => (
-            <div
-              key={transaction.id}
-              className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                  <i className={getTransactionIcon(transaction.type)}></i>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900 dark:text-white">
-                    {transaction.type}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {transaction.client_name}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-500">
-                    {new Date(transaction.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="text-right">
-                <p className="font-semibold text-gray-900 dark:text-white">
-                  ${parseFloat(transaction.amount).toLocaleString('es-CO')}
-                </p>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400`}>
-                  Completado
-                </span>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-8">
-            <i className="fas fa-receipt text-4xl text-gray-300 dark:text-gray-600 mb-4"></i>
-            <p className="text-gray-500 dark:text-gray-400">No hay transacciones recientes</p>
+    <div className="neobank-card overflow-hidden">
+      {/* Header and Filter Bar */}
+      <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+              Libro de Movimientos Recientes
+            </h3>
+            <span className="text-[11px] font-medium text-slate-400">
+              ({filteredTransactions.length} registros)
+            </span>
           </div>
-        )}
-      </div>
-
-      {/* Quick Stats */}
-      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center">
-            <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-              {recentTransactions.filter(t => t.type === 'Depósito').length}
-            </p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Depósitos recientes</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-              {recentTransactions.filter(t => t.type === 'Retiro').length}
-            </p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Retiros recientes</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {recentTransactions.filter(t => t.type === 'Transferencia').length}
-            </p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Transferencias recientes</p>
-          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Historial de auditoría inmediata del sistema bancario
+          </p>
         </div>
+
+        <div className="flex items-center gap-3">
+          {/* Minimalist Filter Pills */}
+          <div className="flex items-center p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700/80 overflow-x-auto">
+            {types.map(t => (
+              <button
+                key={t}
+                onClick={() => setFilterType(t)}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  filterType === t
+                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-semibold'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => onNavigate && onNavigate('transacciones')}
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1 transition-colors shrink-0"
+          >
+            <span>Ver todo</span>
+            <i className="fas fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+      </div>
+
+      {/* Clean Neobank Table */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+          <thead className="bg-slate-50/75 dark:bg-slate-800/40 text-slate-400 dark:text-slate-500 font-semibold border-b border-slate-100 dark:border-slate-800 uppercase tracking-wider text-[10px]">
+            <tr>
+              <th className="py-3 px-5">Fecha / Hora</th>
+              <th className="py-3 px-5">Titular</th>
+              <th className="py-3 px-5">Operación</th>
+              <th className="py-3 px-5">Detalle o Concepto</th>
+              <th className="py-3 px-5 text-right">Monto (COP)</th>
+              <th className="py-3 px-5 text-center">Estado</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
+            {filteredTransactions.length > 0 ? (
+              filteredTransactions.map((tx) => {
+                const isPositive = tx.type === 'Depósito' || tx.type === 'Transferencia';
+                const initials = (tx.client_name || 'U')
+                  .split(' ')
+                  .map(n => n[0])
+                  .slice(0, 2)
+                  .join('');
+
+                return (
+                  <tr key={tx.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3.5 px-5 whitespace-nowrap text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                      {new Date(tx.created_at).toLocaleDateString('es-CO', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </td>
+                    <td className="py-3.5 px-5 whitespace-nowrap">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0 uppercase">
+                          {initials}
+                        </div>
+                        <span className="font-semibold text-slate-900 dark:text-white">
+                          {tx.client_name}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-5 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${getTransactionBadge(tx.type)}`}>
+                        {tx.type}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-5 text-slate-500 dark:text-slate-400 max-w-xs truncate">
+                      {tx.description || 'Sin concepto registrado'}
+                    </td>
+                    <td className={`py-3.5 px-5 text-right font-bold tabular-nums whitespace-nowrap text-xs ${
+                      isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-900 dark:text-white'
+                    }`}>
+                      {isPositive ? '+' : '-'}${parseFloat(tx.amount || 0).toLocaleString('es-CO')}
+                    </td>
+                    <td className="py-3.5 px-5 text-center whitespace-nowrap">
+                      <span className="neobank-badge-emerald text-[10px] py-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Completado
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="6" className="py-10 text-center text-slate-400 text-xs">
+                  <div className="flex flex-col items-center justify-center gap-1.5">
+                    <i className="fas fa-folder-open text-slate-300 dark:text-slate-600 text-lg"></i>
+                    <p>No se encontraron movimientos registrados para este filtro</p>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

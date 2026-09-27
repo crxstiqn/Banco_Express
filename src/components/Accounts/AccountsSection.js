@@ -10,7 +10,6 @@ const AccountsSection = () => {
   
   const [accounts, setAccounts] = useState([]);
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -37,10 +36,8 @@ const AccountsSection = () => {
       const cliData = await cliRes.json();
       setAccounts(accData);
       setClients(cliData);
-      setLoading(false);
     } catch (err) {
       console.error('Error fetching data:', err);
-      setLoading(false);
     }
   };
 
@@ -166,6 +163,15 @@ const AccountsSection = () => {
             Administra las cuentas bancarias de los clientes
           </p>
         </div>
+        {user?.role === 'admin' && (
+          <button
+            onClick={handleCreateAccount}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          >
+            <i className="fas fa-plus mr-2"></i>
+            Nueva Cuenta
+          </button>
+        )}
       </div>
 
       {/* Filters */}

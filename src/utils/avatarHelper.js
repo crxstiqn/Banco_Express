@@ -13,7 +13,7 @@ export const getAvatarUrl = (user) => {
   const isFemale = nombre.endsWith('a') || 
                    nombre.endsWith('is') || 
                    nombre.endsWith('th') ||
-                   ['carmen', 'beatriz', 'luz', 'flor', 'pilar', 'mar,', 'sol', 'consuelo', 'rosario', 'dolores', 'mercedes', 'inés', 'raquel', 'esther', 'leonor', 'miriam', 'ruth', 'abigail', 'judith'].includes(nombre);
+                   ['carmen', 'beatriz', 'luz', 'flor', 'pilar', 'mar', 'sol', 'consuelo', 'rosario', 'dolores', 'mercedes', 'inés', 'raquel', 'esther', 'leonor', 'miriam', 'ruth', 'abigail', 'judith'].includes(nombre);
 
   // Excepciones de nombres de hombre que terminan en 'a'
   const isMaleException = ['luca', 'josea', 'andrea', 'josua', 'bautista', 'elias'].includes(nombre);

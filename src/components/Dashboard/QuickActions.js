@@ -2,25 +2,19 @@ import apiFetch from '../../utils/api';
 import React, { useState, useEffect } from 'react';
 import { useBank } from '../../context/BankContext';
 
-const QuickActions = () => {
+const QuickActions = ({ onSuccess }) => {
   const { actions } = useBank();
   const [showModal, setShowModal] = useState(false);
   const [actionType, setActionType] = useState('');
+  const [loading, setLoading] = useState(false);
   
-  const [clients, setClients] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    // Fetch clients and accounts for the dropdowns
     const fetchData = async () => {
       try {
-        const [clientsRes, accountsRes] = await Promise.all([
-          apiFetch('http://localhost:5001/api/clients'),
-          apiFetch('http://localhost:5001/api/accounts')
-        ]);
-        const clientsData = await clientsRes.json();
+        const accountsRes = await apiFetch('http://localhost:5001/api/accounts');
         const accountsData = await accountsRes.json();
-        setClients(clientsData);
         setAccounts(accountsData);
       } catch (err) {
         console.error('Error fetching data for quick actions:', err);
@@ -40,30 +34,38 @@ const QuickActions = () => {
     {
       id: 'deposito',
       title: 'Depósito Rápido',
-      icon: 'fas fa-plus-circle',
-      color: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30'
+      subtitle: 'Abonar saldo a cuenta',
+      icon: 'fas fa-arrow-down-left',
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bgLight: 'bg-emerald-50/80 dark:bg-emerald-950/40',
+      borderHover: 'hover:border-emerald-500/50'
     },
     {
       id: 'retiro',
-      title: 'Retiro Rápido',
-      icon: 'fas fa-minus-circle',
-      color: 'text-red-600 dark:text-red-400',
-      bgColor: 'bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30'
+      title: 'Retiro en Ventanilla',
+      subtitle: 'Dispensar efectivo',
+      icon: 'fas fa-arrow-up-right',
+      color: 'text-amber-600 dark:text-amber-400',
+      bgLight: 'bg-amber-50/80 dark:bg-amber-950/40',
+      borderHover: 'hover:border-amber-500/50'
     },
     {
       id: 'transferencia',
-      title: 'Transferencia',
-      icon: 'fas fa-exchange-alt',
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30'
+      title: 'Transferir Fondos',
+      subtitle: 'Mover entre cuentas',
+      icon: 'fas fa-repeat',
+      color: 'text-teal-600 dark:text-teal-400',
+      bgLight: 'bg-teal-50/80 dark:bg-teal-950/40',
+      borderHover: 'hover:border-teal-500/50'
     },
     {
       id: 'pago',
       title: 'Pago de Servicios',
-      icon: 'fas fa-credit-card',
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30'
+      subtitle: 'Recaudo de convenios',
+      icon: 'fas fa-receipt',
+      color: 'text-slate-700 dark:text-slate-300',
+      bgLight: 'bg-slate-100 dark:bg-slate-800',
+      borderHover: 'hover:border-slate-400/50'
     }
   ];
 
@@ -82,15 +84,23 @@ const QuickActions = () => {
     e.preventDefault();
     
     if (!formData.cuenta || !formData.monto) {
-      actions.showToast('Por favor complete todos los campos requeridos', 'error');
+      actions.showToast('Por favor complete la cuenta y el monto requerido', 'error');
       return;
     }
 
+    setLoading(true);
+    const tipoMap = {
+      deposito: 'Depósito',
+      retiro: 'Retiro',
+      transferencia: 'Transferencia',
+      pago: 'Pago'
+    };
+
     const payload = {
-      tipo: actionType.charAt(0).toUpperCase() + actionType.slice(1),
+      tipo: tipoMap[actionType] || 'Depósito',
       cuenta: formData.cuenta,
-      monto: formData.monto,
-      descripcion: formData.descripcion
+      monto: parseFloat(formData.monto),
+      descripcion: formData.descripcion || `${tipoMap[actionType]} procesado desde consola`
     };
 
     try {
@@ -103,165 +113,147 @@ const QuickActions = () => {
       const data = await res.json();
       
       if (res.ok) {
-        actions.showToast(`${payload.tipo} procesado exitosamente`, 'success');
+        actions.showToast(`${payload.tipo} de $${parseFloat(payload.monto).toLocaleString('es-CO')} procesado exitosamente`, 'success');
         setShowModal(false);
-        // Refresh page so dashboard updates (simple way for now)
-        window.location.reload();
+        if (onSuccess) onSuccess();
       } else {
         actions.showToast(data.message || 'Error procesando transacción', 'error');
       }
     } catch (err) {
       console.error(err);
-      actions.showToast('Error de conexión', 'error');
+      actions.showToast('Error de conexión con el servidor', 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getClients = () => {
-    return clients.map(client => ({
-      value: client.nombre,
-      label: `${client.nombre} (${client.cedula})`
-    }));
-  };
-
-  const getAccounts = () => {
-    return accounts.map(account => ({
-      value: account.numero,
-      label: `${account.numero} - ${account.cliente} (${account.tipo})`
-    }));
-  };
-
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Acciones Rápidas
-      </h3>
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          Operaciones Rápidas de Caja
+        </h3>
+        <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Terminal Activa
+        </span>
+      </div>
       
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {quickActions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleActionClick(action.id)}
-            className={`w-full p-4 rounded-lg border border-gray-200 dark:border-gray-700 ${action.bgColor} transition-all duration-200 hover:shadow-md`}
+            className={`neobank-card p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${action.borderHover} group`}
           >
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm">
-                <i className={`${action.icon} ${action.color} text-lg`}></i>
+            <div className="flex items-center justify-between mb-2.5">
+              <div className={`w-8 h-8 rounded-xl ${action.bgLight} ${action.color} flex items-center justify-center text-xs shadow-2xs transition-transform duration-200 group-hover:scale-110`}>
+                <i className={action.icon}></i>
               </div>
-              <div className="text-left">
-                <p className="font-medium text-gray-900 dark:text-white">
-                  {action.title}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Procesar {action.id}
-                </p>
-              </div>
-              <div className="ml-auto">
-                <i className="fas fa-chevron-right text-gray-400"></i>
-              </div>
+              <i className="fas fa-chevron-right text-[10px] text-slate-300 dark:text-slate-600 transition-transform group-hover:translate-x-0.5"></i>
             </div>
+            <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+              {action.title}
+            </p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 truncate mt-0.5">
+              {action.subtitle}
+            </p>
           </button>
         ))}
       </div>
 
-      {/* Quick Stats removed as they are part of Dashboard now */}
-
-      {/* Modal */}
+      {/* Modal Minimalista */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {actionType.charAt(0).toUpperCase() + actionType.slice(1)} Rápido
-                </h3>
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
+                    <i className="fas fa-bolt"></i>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                      {quickActions.find(a => a.id === actionType)?.title || 'Nueva Operación'}
+                    </h3>
+                    <p className="text-[11px] text-slate-400">Transacción inmediata en el núcleo bancario</p>
+                  </div>
+                </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center text-xs transition-colors"
                 >
                   <i className="fas fa-times"></i>
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Cliente *
-                  </label>
-                  <select
-                    value={formData.cliente}
-                    onChange={(e) => setFormData({...formData, cliente: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    required
-                  >
-                    <option value="">Seleccionar cliente</option>
-                    {getClients().map((client) => (
-                      <option key={client.value} value={client.value}>
-                        {client.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Cuenta *
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Cuenta Destino / Origen *
                   </label>
                   <select
                     value={formData.cuenta}
-                    onChange={(e) => setFormData({...formData, cuenta: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    onChange={(e) => setFormData({ ...formData, cuenta: e.target.value })}
                     required
+                    className="bank-input text-xs"
                   >
-                    <option value="">Seleccionar cuenta</option>
-                    {getAccounts().map((account) => (
-                      <option key={account.value} value={account.value}>
-                        {account.label}
+                    <option value="">Seleccione una cuenta bancaria...</option>
+                    {accounts.map(acc => (
+                      <option key={acc.id} value={acc.numero}>
+                        {acc.numero} — {acc.cliente} (${parseFloat(acc.saldo || 0).toLocaleString('es-CO')})
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Monto *
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Monto (COP) *
                   </label>
-                  <input
-                    type="number"
-                    value={formData.monto}
-                    onChange={(e) => setFormData({...formData, monto: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    placeholder="0"
-                    min="1"
-                    required
-                  />
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">$</span>
+                    <input
+                      type="number"
+                      step="any"
+                      min="1000"
+                      placeholder="Ej: 500000"
+                      value={formData.monto}
+                      onChange={(e) => setFormData({ ...formData, monto: e.target.value })}
+                      required
+                      className="bank-input pl-7 text-xs font-semibold"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Descripción
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Concepto o Referencia (Opcional)
                   </label>
-                  <textarea
+                  <input
+                    type="text"
+                    placeholder="Ej: Depósito en caja, pago servicio de agua..."
                     value={formData.descripcion}
-                    onChange={(e) => setFormData({...formData, descripcion: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    rows="3"
-                    placeholder="Descripción opcional..."
+                    onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                    className="bank-input text-xs"
                   />
                 </div>
 
-                <div className="flex space-x-3 pt-4">
+                <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
+                    disabled={loading}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
                   >
-                    Procesar
+                    {loading && <i className="fas fa-spinner animate-spin text-[10px]"></i>}
+                    <span>Confirmar Transacción</span>
                   </button>
                 </div>
               </form>

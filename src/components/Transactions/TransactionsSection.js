@@ -4,7 +4,6 @@ import Breadcrumbs from '../UI/Breadcrumbs';
 
 const TransactionsSection = () => {
   const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -20,10 +19,8 @@ const TransactionsSection = () => {
         const res = await apiFetch('http://localhost:5001/api/transactions');
         const data = await res.json();
         setTransactions(data);
-        setLoading(false);
       } catch (err) {
         console.error('Error fetching transactions:', err);
-        setLoading(false);
       }
     };
     fetchTransactions();

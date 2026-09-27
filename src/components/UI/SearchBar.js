@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useBank } from '../../context/BankContext';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -42,8 +41,6 @@ const SearchBar = () => {
     setQuery('');
     setResults([]);
     setShowResults(false);
-    // Here you would navigate to the specific section/item
-    console.log('Navigate to:', result);
   };
 
   return (

@@ -107,9 +107,7 @@ const Header = ({ onToggleSidebar, darkMode, onToggleDarkMode, sidebarCollapsed,
    * @param {Object} filters - Objeto con los filtros seleccionados
    */
   const handleApplyFilters = (filters) => {
-    console.log('Filtros aplicados:', filters);
     // Aquí se implementaría la lógica para aplicar los filtros
-    // Por ejemplo, actualizar el contexto global o llamar a una API
   };
 
   return (

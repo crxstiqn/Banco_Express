@@ -4,7 +4,6 @@ import Breadcrumbs from '../UI/Breadcrumbs';
 
 const CreditsSection = () => {
   const [credits, setCredits] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -19,10 +18,8 @@ const CreditsSection = () => {
         const res = await apiFetch('http://localhost:5001/api/credits');
         const data = await res.json();
         setCredits(data);
-        setLoading(false);
       } catch (err) {
         console.error('Error fetching credits:', err);
-        setLoading(false);
       }
     };
     fetchCredits();

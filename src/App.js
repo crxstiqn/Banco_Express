@@ -213,7 +213,7 @@ function AppContent() {
    */
   return (
     <BankProvider>
-      <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 ${darkMode ? 'dark' : ''}`}>
+      <div className={`min-h-screen bg-slate-50/80 dark:bg-slate-950 transition-colors duration-300 ${darkMode ? 'dark' : ''}`}>
         
         {/* Overlay del Sidebar para Mobile */}
         {sidebarOpen && (

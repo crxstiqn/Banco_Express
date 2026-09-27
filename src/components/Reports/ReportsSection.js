@@ -4,7 +4,7 @@ import { useBank } from '../../context/BankContext';
 import Breadcrumbs from '../UI/Breadcrumbs';
 
 const ReportsSection = () => {
-  const { state, actions } = useBank();
+  const { actions } = useBank();
   const [activeReport, setActiveReport] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
