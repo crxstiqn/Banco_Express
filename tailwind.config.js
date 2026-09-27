@@ -15,18 +15,18 @@ module.exports = {
         '2xl': '1536px', // 2X large devices (large desktops)
       },
       colors: {
-        // Colores basados en el nuevo logo (Azul y Verde)
+        // Colores institucionales Banco Exprés (Verde Esmeralda)
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6', // Azul del logo
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#047857', // Verde institucional
+          700: '#065f46',
+          800: '#064e3b',
+          900: '#022c22',
         },
         secondary: {
           50: '#f0fdf4',
