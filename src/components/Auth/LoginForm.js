@@ -35,14 +35,6 @@ const LoginForm = ({ onSwitchToRegister }) => {
     }));
   };
 
-  const handleQuickFill = (email, password) => {
-    setFormData({
-      email,
-      password,
-      rememberMe: true
-    });
-    if (error) clearError();
-  };
 
   return (
     <div className="w-full">
@@ -151,50 +143,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
         </button>
       </form>
 
-      {/* Demo Credentials Quick Switcher matching reference image */}
-      <div className="mt-8 pt-5 border-t border-slate-100 dark:border-slate-800">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
-            Acceso Rápido para Pruebas
-          </span>
-          <span className="text-[10px] text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-200/80 dark:border-emerald-800/60">
-            Demo 1-Click
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={() => handleQuickFill('admin@bancoexpres.com', 'admin123')}
-            className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-left transition-all flex items-center justify-between group"
-          >
-            <div className="min-w-0 pr-2">
-              <span className="font-bold text-xs text-slate-800 dark:text-slate-200 block truncate">
-                Administrador
-              </span>
-              <span className="text-[10px] text-slate-400 block truncate font-normal">
-                admin@bancoexpres.com
-              </span>
-            </div>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-          </button>
-          
-          <button
-            type="button"
-            onClick={() => handleQuickFill('carlos.ruiz@email.com', 'cliente123')}
-            className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-left transition-all flex items-center justify-between group"
-          >
-            <div className="min-w-0 pr-2">
-              <span className="font-bold text-xs text-slate-800 dark:text-slate-200 block truncate">
-                Cliente (Carlos)
-              </span>
-              <span className="text-[10px] text-slate-400 block truncate font-normal">
-                carlos.ruiz@email.com
-              </span>
-            </div>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-          </button>
-        </div>
-      </div>
+
     </div>
   );
 };
