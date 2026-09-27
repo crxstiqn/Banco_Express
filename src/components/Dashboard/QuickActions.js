@@ -34,38 +34,38 @@ const QuickActions = ({ onSuccess }) => {
     {
       id: 'deposito',
       title: 'Depósito Rápido',
-      subtitle: 'Abonar saldo a cuenta',
-      icon: 'fas fa-arrow-down-left',
-      color: 'text-emerald-600 dark:text-emerald-400',
-      bgLight: 'bg-emerald-50/80 dark:bg-emerald-950/40',
+      subtitle: 'Abonar saldo a cuent...',
+      shortcut: 'F1 • Efectivo',
+      icon: 'fas fa-inbox',
+      iconBg: 'bg-[#047857] text-white',
       borderHover: 'hover:border-emerald-500/50'
     },
     {
       id: 'retiro',
       title: 'Retiro en Ventanilla',
-      subtitle: 'Dispensar efectivo',
-      icon: 'fas fa-arrow-up-right',
-      color: 'text-amber-600 dark:text-amber-400',
-      bgLight: 'bg-amber-50/80 dark:bg-amber-950/40',
-      borderHover: 'hover:border-amber-500/50'
+      subtitle: 'Dispensar con biome...',
+      shortcut: 'F2 • Caja Directa',
+      icon: 'fas fa-money-bill-transfer',
+      iconBg: 'bg-[#334155] text-white',
+      borderHover: 'hover:border-slate-500/50'
     },
     {
       id: 'transferencia',
       title: 'Transferir Fondos',
-      subtitle: 'Mover entre cuentas',
+      subtitle: 'Cuentas Propias / ACH',
+      shortcut: 'F3 • Transfiya',
       icon: 'fas fa-repeat',
-      color: 'text-teal-600 dark:text-teal-400',
-      bgLight: 'bg-teal-50/80 dark:bg-teal-950/40',
-      borderHover: 'hover:border-teal-500/50'
+      iconBg: 'bg-[#0284c7] text-white',
+      borderHover: 'hover:border-blue-500/50'
     },
     {
       id: 'pago',
       title: 'Pago de Servicios',
-      subtitle: 'Recaudo de convenios',
-      icon: 'fas fa-receipt',
-      color: 'text-slate-700 dark:text-slate-300',
-      bgLight: 'bg-slate-100 dark:bg-slate-800',
-      borderHover: 'hover:border-slate-400/50'
+      subtitle: 'Facturación y conven...',
+      shortcut: 'F4 • Recaudo',
+      icon: 'fas fa-file-invoice',
+      iconBg: 'bg-[#1e293b] text-white',
+      borderHover: 'hover:border-slate-500/50'
     }
   ];
 
@@ -129,35 +129,48 @@ const QuickActions = ({ onSuccess }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Operaciones Rápidas de Caja
-        </h3>
-        <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          Terminal Activa
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+        <div className="flex items-center gap-2.5">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
+            Operaciones Rápidas de Caja
+          </h3>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-800/60">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Terminal Activa - Caja Principal #01
+          </span>
+        </div>
+        <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+          Atajos Rápidos [F1 - F4]
         </span>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {quickActions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleActionClick(action.id)}
-            className={`neobank-card p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${action.borderHover} group`}
+            className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-2.5">
-              <div className={`w-8 h-8 rounded-xl ${action.bgLight} ${action.color} flex items-center justify-center text-xs shadow-2xs transition-transform duration-200 group-hover:scale-110`}>
-                <i className={action.icon}></i>
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className={`w-9 h-9 rounded-xl ${action.iconBg} flex items-center justify-center text-xs shadow-xs transition-transform duration-200 group-hover:scale-105`}>
+                  <i className={action.icon}></i>
+                </div>
+                <i className="fas fa-chevron-right text-[10px] text-slate-300 dark:text-slate-600 transition-transform group-hover:translate-x-0.5"></i>
               </div>
-              <i className="fas fa-chevron-right text-[10px] text-slate-300 dark:text-slate-600 transition-transform group-hover:translate-x-0.5"></i>
+              <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                {action.title}
+              </p>
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5 font-normal">
+                {action.subtitle}
+              </p>
             </div>
-            <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
-              {action.title}
-            </p>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 truncate mt-0.5">
-              {action.subtitle}
-            </p>
+
+            <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+              <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 font-medium">
+                {action.shortcut}
+              </span>
+            </div>
           </button>
         ))}
       </div>

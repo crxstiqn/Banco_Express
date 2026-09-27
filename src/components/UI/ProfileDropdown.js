@@ -96,39 +96,11 @@ const ProfileDropdown = ({ onNavigateToConfig }) => {
         {/* BOTÓN DEL PERFIL */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-3 px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="w-9 h-9 rounded-full bg-[#047857] hover:bg-[#065f46] text-white flex items-center justify-center transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
           aria-label="Menú de perfil"
+          title={user?.name || 'Perfil'}
         >
-          {/* Avatar del usuario */}
-          <div className="relative">
-            <img
-              src={getAvatarUrl(user) || '/profile.avif'}
-              alt="Foto de perfil"
-              className="w-10 h-10 rounded-full object-cover border-2 border-primary-200 dark:border-primary-600"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-            />
-            <div 
-              className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm hidden"
-            >
-              <i className="fas fa-user"></i>
-            </div>
-          </div>
-          
-          {/* Información del usuario (oculta en mobile) */}
-          <div className="hidden md:block text-left">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {user?.name || 'Usuario'}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-              {user?.role === 'admin' ? 'Administrador' : user?.role === 'user' ? 'Cliente' : user?.role || 'Empleado'}
-            </p>
-          </div>
-          
-          {/* Icono de flecha */}
-          <i className={`fas fa-chevron-down text-xs text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}></i>
+          <i className="fas fa-user text-xs"></i>
         </button>
 
         {/* MENÚ DESPLEGABLE */}

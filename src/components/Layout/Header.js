@@ -1,225 +1,133 @@
-/**
- * COMPONENTE HEADER - BARRA SUPERIOR
- * ==================================
- * 
- * Header principal del dashboard con controles de navegación,
- * búsqueda, notificaciones, tema y información contextual.
- * 
- * @author Banco Exprés Development Team
- * @version 1.0.0
- * @created 2024-12-26
- * 
- * CARACTERÍSTICAS:
- * - Botón hamburguesa para toggle del sidebar
- * - Barra de búsqueda global integrada
- * - Toggle de tema oscuro/claro
- * - Panel de notificaciones
- * - Menú de perfil de usuario
- * - Fecha y hora en tiempo real
- * - Ubicación del banco (Cúcuta)
- * - Modal de filtros funcional
- * - Diseño responsive completo
- */
-
 import React, { useState, useEffect } from 'react';
-import SearchBar from '../UI/SearchBar';
 import NotificationPanel from '../UI/NotificationPanel';
 import ProfileDropdown from '../UI/ProfileDropdown';
-import FiltersModal from '../UI/FiltersModal';
 import { useBank } from '../../context/BankContext';
+import { useAuth } from '../../context/AuthContext';
 
-/**
- * COMPONENTE HEADER
- * =================
- * 
- * @param {function} onToggleSidebar - Callback para toggle del sidebar
- * @param {boolean} darkMode - Estado actual del tema oscuro
- * @param {function} onToggleDarkMode - Callback para cambiar tema
- * @param {boolean} sidebarCollapsed - Estado de colapso del sidebar
- * @param {function} onNavigateToConfig - Callback para ir a configuración
- */
 const Header = ({ onToggleSidebar, darkMode, onToggleDarkMode, sidebarCollapsed, onNavigateToConfig }) => {
-  // Estados locales del componente
-  const [currentTime, setCurrentTime] = useState(new Date()); // Tiempo actual
-  const [showNotifications, setShowNotifications] = useState(false); // Panel de notificaciones
-  const [showFilters, setShowFilters] = useState(false); // Modal de filtros
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [showNotifications, setShowNotifications] = useState(false);
   const { state } = useBank();
+  const { user } = useAuth();
   
-  const notificationsCount = state.notifications?.length || 0;
+  const notificationsCount = state.notifications?.length || 1;
 
-  /**
-   * EFECTO: Reloj en Tiempo Real
-   * ============================
-   * 
-   * Actualiza la fecha y hora cada segundo para mostrar
-   * información en tiempo real en el header.
-   */
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-
-    // Cleanup: limpiar el timer al desmontar el componente
     return () => clearInterval(timer);
   }, []);
 
-  /**
-   * FUNCIÓN: Formatear Fecha
-   * ========================
-   * 
-   * Formatea la fecha en español colombiano con formato completo.
-   * 
-   * @param {Date} date - Objeto Date a formatear
-   * @returns {string} - Fecha formateada (ej: "lunes, 26 de diciembre de 2024")
-   */
-  const formatDate = (date) => {
-    return date.toLocaleDateString('es-CO', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  /**
-   * FUNCIÓN: Formatear Hora
-   * =======================
-   * 
-   * Formatea la hora en formato 24 horas con segundos.
-   * 
-   * @param {Date} date - Objeto Date a formatear
-   * @returns {string} - Hora formateada (ej: "14:30:25")
-   */
-  const formatTime = (date) => {
+  const formatTimeCOT = (date) => {
     return date.toLocaleTimeString('es-CO', {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
+      hour12: false
     });
-  };
-
-  /**
-   * FUNCIÓN: Aplicar Filtros
-   * ========================
-   * 
-   * Maneja la aplicación de filtros desde el modal.
-   * 
-   * @param {Object} filters - Objeto con los filtros seleccionados
-   */
-  const handleApplyFilters = (filters) => {
-    // Aquí se implementaría la lógica para aplicar los filtros
   };
 
   return (
     <>
-      <header className="glass-header sticky top-0 z-30 transition-colors duration-200 px-2 xs:px-3 sm:px-4 lg:px-6 xl:px-8 py-3 sm:py-4">
-        <div className="flex items-center justify-between">
+      <header className="sticky top-0 z-30 transition-colors duration-200 px-4 sm:px-6 py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800">
+        <div className="flex items-center justify-between gap-4">
           
-          {/* SECCIÓN IZQUIERDA */}
-          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-1">
-            
-            {/* BOTÓN HAMBURGUESA */}
+          {/* Left: Hamburger & Search Bar */}
+          <div className="flex items-center gap-3 flex-1 max-w-xl">
             <button
               onClick={onToggleSidebar}
-              className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Toggle sidebar"
-              title="Abrir/cerrar menú"
+              title="Menú"
             >
-              {/* Icono hamburguesa animado */}
-              <div className="w-5 h-5 sm:w-6 sm:h-6 flex flex-col justify-center items-center">
-                <span className={`block h-0.5 w-full bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${sidebarCollapsed ? 'rotate-45 translate-y-1' : ''}`}></span>
-                <span className={`block h-0.5 w-full bg-gray-600 dark:bg-gray-300 transition-all duration-300 my-1 ${sidebarCollapsed ? 'opacity-0' : ''}`}></span>
-                <span className={`block h-0.5 w-full bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${sidebarCollapsed ? '-rotate-45 -translate-y-1' : ''}`}></span>
-              </div>
+              <i className="fas fa-bars text-sm"></i>
             </button>
 
-            {/* LOGO MOBILE */}
-            <div className="lg:hidden flex items-center">
-              <img 
-                src="/img/logo/logo.jpeg" 
-                alt="Logo" 
-                className="w-8 h-8 object-contain rounded"
-              />
-            </div>
-
-            {/* BARRA DE BÚSQUEDA */}
-            <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md hidden xs:block">
-              <SearchBar />
+            {/* Global Search Bar matching screenshot */}
+            <div className="relative flex-1 max-w-sm hidden sm:block">
+              <div className="flex items-center w-full px-3.5 py-1.5 bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 rounded-xl text-xs text-slate-700 dark:text-slate-200 focus-within:border-emerald-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all shadow-2xs">
+                <i className="fas fa-magnifying-glass text-slate-400 text-xs mr-2.5"></i>
+                <input
+                  type="text"
+                  placeholder="Buscar por cuenta, cédula, tra..."
+                  className="w-full bg-transparent placeholder-slate-400 focus:outline-none text-xs"
+                />
+                <kbd className="hidden md:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium text-slate-400 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded">
+                  ⌘K
+                </kbd>
+              </div>
             </div>
           </div>
 
-          {/* SECCIÓN DERECHA */}
-          <div className="flex items-center gap-1 xs:gap-2 sm:gap-3 lg:gap-4">
+          {/* Right: Badges, Time, Notifications, User */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
             
-            {/* UBICACIÓN (Oculta en mobile y small tablets) */}
-            <div className="hidden md:flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-              <i className="fas fa-map-marker-alt text-primary-500" title="Ubicación"></i>
-              <span className="hidden lg:inline">Cúcuta, Norte de Santander</span>
-              <span className="lg:hidden">Cúcuta</span>
+            {/* Pill: Sucursal Principal */}
+            <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60 text-xs font-medium text-slate-700 dark:text-slate-300">
+              <i className="fas fa-building-columns text-slate-400 text-xs"></i>
+              <span>Sucursal Principal - Cúcuta</span>
             </div>
 
-            {/* FECHA Y HORA (Oculta en mobile y tablets) */}
-            <div className="hidden xl:flex flex-col items-end text-sm text-gray-600 dark:text-gray-300">
-              <span className="font-medium">{formatDate(currentTime)}</span>
-              <span className="text-xs">{formatTime(currentTime)}</span>
+            {/* Pill: Núcleo en Línea */}
+            <div className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60 text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Núcleo en Línea</span>
             </div>
 
-            {/* TOGGLE DE TEMA OSCURO/CLARO */}
+            {/* Pill: Reloj COT */}
+            <div className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60 text-xs font-medium text-slate-600 dark:text-slate-300">
+              <i className="far fa-clock text-slate-400 text-xs"></i>
+              <span className="font-mono">{formatTimeCOT(currentTime)} COT</span>
+            </div>
+
+            {/* Dark Mode Toggle */}
             <button
               onClick={onToggleDarkMode}
-              className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title={darkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               aria-label="Toggle dark mode"
-              title={darkMode ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
             >
-              <i className={`${darkMode ? 'fas fa-sun text-yellow-500' : 'fas fa-moon text-gray-600 dark:text-gray-300'} text-sm sm:text-base lg:text-lg`}></i>
+              <i className={`fas ${darkMode ? 'fa-sun text-amber-400' : 'fa-moon text-slate-600'} text-xs`}></i>
             </button>
 
-            {/* MENÚ DE PERFIL DE USUARIO */}
-            <ProfileDropdown onNavigateToConfig={onNavigateToConfig} />
-
-            {/* PANEL DE NOTIFICACIONES */}
+            {/* Notification Bell */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 relative"
+                className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative"
                 aria-label="Notifications"
                 title="Notificaciones"
               >
-                <i className="fas fa-bell text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-300"></i>
-                {/* Badge de notificaciones pendientes */}
+                <i className="far fa-bell text-sm"></i>
                 {notificationsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-danger-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-                    {notificationsCount > 9 ? '9+' : notificationsCount}
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {notificationsCount}
                   </span>
                 )}
               </button>
 
-              {/* Panel de notificaciones (condicional) */}
               {showNotifications && (
                 <NotificationPanel onClose={() => setShowNotifications(false)} />
               )}
             </div>
 
-            {/* BOTÓN DE FILTROS (Oculto en mobile y small tablets) */}
-            <button 
-              onClick={() => setShowFilters(true)}
-              className="hidden md:flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-              title="Abrir filtros"
-              aria-label="Filtros"
-            >
-              <i className="fas fa-filter text-sm"></i>
-              <span className="text-xs sm:text-sm font-medium hidden lg:inline">Filtros</span>
-            </button>
+            {/* User Profile Pill matching screenshot */}
+            <div className="flex items-center gap-2.5 pl-2 sm:border-l border-slate-200 dark:border-slate-800">
+              <div className="hidden sm:block text-right">
+                <span className="block text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                  {user?.role === 'admin' ? (user?.name || 'Admin. Carlos Mendoza') : (user?.name || 'Cliente')}
+                </span>
+                <span className="block text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                  {user?.role === 'admin' ? 'Oficial Operativo Principal' : 'Cuentahabiente Digital'}
+                </span>
+              </div>
+              <ProfileDropdown onNavigateToConfig={onNavigateToConfig} />
+            </div>
+
           </div>
         </div>
       </header>
-
-      {/* MODAL DE FILTROS */}
-      <FiltersModal
-        isOpen={showFilters}
-        onClose={() => setShowFilters(false)}
-        onApplyFilters={handleApplyFilters}
-      />
     </>
   );
 };

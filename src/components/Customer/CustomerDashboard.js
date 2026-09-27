@@ -153,7 +153,7 @@ const CustomerDashboard = ({ onNavigate }) => {
           <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
             <button
               onClick={() => onNavigate && onNavigate('transferencias')}
-              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow-emerald-600/25"
+              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[#047857] hover:bg-[#065f46] active:scale-[0.99] text-white text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
             >
               <i className="fas fa-paper-plane text-xs"></i>
               <span>Transferir</span>
